@@ -155,8 +155,8 @@
     function markAsSent() {
       localStorage.setItem(STORAGE_KEY, getToday());
     }
+
     // 하루 1회 제한 + 다국어 메시지
-    const STORAGE_KEY = "daily_email_sent_date";
     function getToday() { return new Date().toISOString().split('T')[0]; }
     // 이미 오늘 보냈는지 체크
     function checkAlreadySent() { return localStorage.getItem(STORAGE_KEY) === getToday(); }
