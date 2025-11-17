@@ -43,6 +43,16 @@
       background:#aaa; cursor:not-allowed; transform:none;
       box-shadow:none;
     }
+
+    .lang-switch { position:absolute; top:20px; right:20px; }
+    .lang-switch button {
+      background:none; border:none; font-size:20px; margin:0 4px; cursor:pointer; opacity:0.7;
+      transition:opacity .2s;
+    }
+    .lang-switch button.active { opacity:1; font-weight:bold; }
+    .lang-switch button:hover { opacity:1; }
+
+    /* 언어 선택기 */
     #status { margin-top:20px; font-weight:500; min-height:28px; }
     .success { color:#34c759; }
     .error { color:#ff3b30; }
@@ -50,6 +60,13 @@
   </style>
 </head>
 <body>
+  <!-- 언어 선택 버튼들 -->
+  <div class="lang-switch">
+    <button onclick="setLang('ko')"   class="lang-btn">한국어</button>
+    <button onclick="setLang('en')"   class="lang-btn">EN</button>
+    <button onclick="setLang('ja')"   class="lang-btn">日本語</button>
+  </div>
+
   <div class="card">
     <h2>건의하기</h2>
     <p class="subtitle">편하게 질문, 건의 보내주세요.<br>단 하루에 한 번만 보내실 수 있어요😊</p>
@@ -63,30 +80,95 @@
 
   <script>
     const STORAGE_KEY = "daily_email_sent_date";   // 이 키로 오늘 보냈는지 체크
+    const translations = {
+      ko: {
+        title: "문의하기",
+        subtitle: "하루에 한 번만 보내실 수 있어요<br>정말 중요한 내용만 부탁드릴게요",
+        placeholder: "무슨 일이 있나요?",
+        send: "전송하기",
+        sent_today: "오늘은 이미 전송하셨습니다<br><small>내일 다시 와주세요</small>",
+        success: "성공적으로 전송되었습니다!<br><small>하루 한 번 감사합니다</small>",
+        error_empty: "내용을 입력해주세요!",
+        sending: "전송 중..."
+      },
+      en: {
+        title: "Contact Me",
+        subtitle: "One message per day only<br>Please send only important messages",
+        placeholder: "What's on your mind?",
+        send: "Send Message",
+        sent_today: "You've already sent a message today<br><small>Please come back tomorrow</small>",
+        success: "Message sent successfully!<br><small>Thank you for one message per day</small>",
+        error_empty: "Please write your message!",
+        sending: "Sending..."
+      },
+      ja: {
+        title: "お問い合わせ",
+        subtitle: "1日1回のみ送信可能です<br>重要な内容のみお願いします",
+        placeholder: "何かありましたか？",
+        send: "送信する",
+        sent_today: "今日はすでに送信済みです<br><small>明日またお越しください</small>",
+        success: "正常に送信されました！<br><small>1日1回ありがとうございます</small>",
+        error_empty: "内容を入力してください！",
+        sending: "送信中..."
+      }
+    };
 
-    // 오늘 날짜 (YYYY-MM-DD 형식)
-    function getToday() {
-      return new Date().toISOString().split('T')[0];   // 2025-11-17
+    // 현재 언어 (URL 파라미터 ?lang=en 또는 localStorage)
+    function getLang() {
+      const params = new URLSearchParams(location.search);
+      const urlLang = params.get('lang');
+      if (urlLang && translations[urlLang]) return urlLang;
+      return localStorage.getItem('userLang') || 'ko';
     }
 
-    // 이미 오늘 보냈는지 체크
-    function checkAlreadySent() {
-      const sentDate = localStorage.getItem(STORAGE_KEY);
-      return sentDate === getToday();
+    function setLang(lang) {
+      localStorage.setItem('userLang', lang);
+      location.search = `?lang=${lang}`;   // URL도 예쁘게 유지
     }
 
-    // 오늘 보냈다고 기록
+    // 페이지 로드 시 언어 적용
+    function applyLanguage() {
+      const lang = getLang();
+      document.documentElement.lang = lang;
+      
+      document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.getAttribute('data-t');
+        if (key === "placeholder") {
+          el.placeholder = translations[lang][key];
+        } else if (key === "title") {
+          document.title = translations[lang][key] + " | Contact";
+          el.textContent = translations[lang][key];
+        } else if (key === "send") {
+          document.getElementById("sendBtn").textContent = translations[lang][key];
+        } else {
+          el.innerHTML = translations[lang][key] || el.innerHTML;
+        }
+      });
+      // 언어 버튼 활성화 표시
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim() === 
+          (lang === 'ko' ? '한국어' : lang === 'en' ? 'EN' : '日本語'));
+      });
+    }
+
     function markAsSent() {
       localStorage.setItem(STORAGE_KEY, getToday());
     }
+    // 하루 1회 제한 + 다국어 메시지
+    const STORAGE_KEY = "daily_email_sent_date";
+    function getToday() { return new Date().toISOString().split('T')[0]; }
+    // 이미 오늘 보냈는지 체크
+    function checkAlreadySent() { return localStorage.getItem(STORAGE_KEY) === getToday(); }
+    // 오늘 보냈다고 기록
+    function markAsSent() { localStorage.setItem(STORAGE_KEY, getToday()); }
 
     // 초기 상태 설정
     window.onload = function() {
-      const status = document.getElementById("status");
+      applyLanguage();
       if (checkAlreadySent()) {
+        document.getElementById("status").className = "warning";
+        document.getElementById("status").innerHTML = translations[getLang()].sent_today;
         document.getElementById("sendBtn").disabled = true;
-        status.className = "warning";
-        status.innerHTML = `오늘은 이미 전송하셨습니다<br><small>내일 다시 이용해주세요</small>`;
       }
     };
 
@@ -101,35 +183,34 @@
         return;
       }
 
-      if (checkAlreadySent()) {
-        status.className = "warning";
-        status.innerHTML = `오늘은 이미 전송하셨습니다<br><small>내일 다시 와주세요</small>`;
-        return;
-      }
+      function sendEmail() {
+      const lang = getLang();
+      const message = document.getElementById("message").value.trim();
+      const status = document.getElementById("status");
+      const button = document.getElementById("sendBtn");
 
-      // 전송 중
+      if (!message) { status.className = "error"; status.textContent = translations[lang].error_empty; return; }
+      if (checkAlreadySent()) { status.className = "warning"; status.innerHTML = translations[lang].sent_today; return; }
+
       status.className = "loading";
-      status.textContent = "전송 중...";
+      status.textContent = translations[lang].sending;
       button.disabled = true;
-      button.textContent = "전송 중...";
 
       // EmailJS_Part
       emailjs.send("service_u2vsen1", "template_vqxgr1v", {
         message: message,
         to_email: "bradgosy@gmail.com"
       }).then(() => {
-        markAsSent();   // 성공하면 오늘 기록
+        markAsSent();
         status.className = "success";
-        status.innerHTML = `성공적으로 전송되었습니다!<br><small>감사합니다 🙌</small>`;
+        status.innerHTML = translations[lang].success;
         document.getElementById("message").value = "";
-        button.disabled = true;
-        button.textContent = "오늘 전송 완료";
-      }, (error) => {
+        button.textContent = lang === 'ko' ? "오늘 전송 완료" : lang === 'en' ? "Sent Today" : "本日送信済";
+      }, () => {
         status.className = "error";
-        status.textContent = "전송 실패: " + (error.text || "다시 시도해주세요");
+        status.textContent = "Failed. Please try again.";
       }).finally(() => {
-        if (!checkAlreadySent()) button.disabled = false;  // 실패하면 다시 시도 가능
-        if (checkAlreadySent()) button.textContent = "오늘 전송 완료";
+        button.disabled = checkAlreadySent();
       });
     }
 
