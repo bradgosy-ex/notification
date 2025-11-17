@@ -3,47 +3,296 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>이메일 보내기</title>
+  <title>문의하기</title>
+  
+  <!-- EmailJS 최신 버전 -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function(){
+    })();
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    p.subtitle {
+      color: #888;
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 160px;
+      padding: 16px;
+      border: 2px solid #e1e1e1;
+      border-radius: 16px;
+      font-size: 16px;
+      font-family: inherit;
+      resize: none;
+      transition: all 0.3s;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102,126,234,0.15);
+    }
+    button {
+      margin-top: 24px;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+      transition: all 0.3s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(102,126,234,0.5);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    #status {
+      margin-top: 20px;
+      font-weight: 500;
+      min-height: 28px;
+    }
+    .success { color: #34c759; }
+    .error { color: #ff3b30; }
+    .loading { color: #667eea; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>문의하기</h2>
+    <p class="subtitle">언제든 편하게 남겨주세요. 빠르게 답장드릴게요!</p>
+    
+    <textarea id="message" placeholder="무슨 일이 있나요? 😊"></textarea>
+    
+    <button onclick="sendEmail()">전송하기</button>
+    
+    <div id="status"></div>
+  </div>
+
+  <script>
+    function sendEmail() {
+      const message = document.getElementById("message").value.trim();
+      const status = document.getElementById("status");
+      const button = document.querySelector("button");
+
+      if (!message) {
+        status.className = "error";
+        status.textContent = "내용을 입력해주세요!";
+        return;
+      }
+
+      // 전송 중 UI
+      status.className = "loading";
+      status.textContent = "전송 중...";
+      button.disabled = true;
+      button.textContent = "전송 중...";
+
+      emailjs.send("service_u2vsen1", "template_vqxgr1v", {
+        message: message,
+        to_email: "bradgosy@gmail.com"
+      }).then(() => {
+        status.className = "success";
+        status.textContent = "성공적으로 전송되었습니다! 감사합니다 🙌";
+        document.getElementById("message").value = "";
+      }, (error) => {
+        status.className = "error";
+        status.textContent = "전송 실패: " + (error.text || "다시 시도해주세요");
+      }).finally(() => {
+        button.disabled = false;
+        button.textContent = "전송하기";
+      });
+    }
+
+    // 엔터키로도 전송 가능
+    document.getElementById("message").addEventListener("keydown", function(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendEmail();
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>문의하기</title>
+  
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     (function(){
       emailjs.init("HzYk0wIEOoM4IMMa_");  // ← EmailJS 가입 후 발급받은 Public Key
     })();
   </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Noto Sans KR',sans-serif;
+      background:linear-gradient(135deg,#667eea,#764ba2);
+      min-height:100vh; padding:20px;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .card {
+      background:#fff; border-radius:24px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.15);
+      padding:40px 30px; width:100%; max-width:420px; text-align:center;
+    }
+    h2 { font-size:24px; margin-bottom:8px; color:#333; }
+    p.subtitle { color:#888; margin-bottom:32px; font-size:15px; }
+    textarea {
+      width:100%; min-height:160px; padding:16px; border:2px solid #e1e1e1;
+      border-radius:16px; font-size:16px; resize:none; transition:.3s;
+    }
+    textarea:focus { outline:none; border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.15); }
+    button {
+      margin-top:24px; width:100%; padding:16px; background:linear-gradient(135deg,#667eea,#764ba2);
+      color:#fff; border:none; border-radius:16px; font-size:17px; font-weight:600;
+      cursor:pointer; box-shadow:0 8px 20px rgba(102,126,234,0.4); transition:.3s;
+    }
+    button:hover { transform:translateY(-2px); }
+    button:disabled {
+      background:#aaa; cursor:not-allowed; transform:none;
+      box-shadow:none;
+    }
+    #status { margin-top:20px; font-weight:500; min-height:28px; }
+    .success { color:#34c759; }
+    .error { color:#ff3b30; }
+    .warning { color:#ff9500; }
+  </style>
 </head>
 <body>
-  <h2>GitHub Pages에서 이메일 보내기</h2>
-  
-  <textarea id="message" rows="5" cols="40" placeholder="내용을 입력하세요."></textarea><br><br>
-  
-  <button onclick="sendEmail()">이메일 보내기</button>
-  
-  <p id="status"></p>
+  <div class="card">
+    <h2>문의하기</h2>
+    <p class="subtitle">하루에 한 번만 보내실 수 있어요<br>정말 중요한 내용만 부탁드릴게요</p>
+    
+    <textarea id="message" placeholder="무슨 일이 있나요?"></textarea>
+    
+    <button id="sendBtn" onclick="sendEmail()">전송하기</button>
+    
+    <div id="status"></div>
+  </div>
 
   <script>
-    function sendEmail() {
-      const message = document.getElementById("message").value;
-      const status = document.getElementById("status");
+    const STORAGE_KEY = "daily_email_sent_date";   // 이 키로 오늘 보냈는지 체크
 
-      if (!message.trim()) {
-        status.style.color = "red";
+    // 오늘 날짜 (YYYY-MM-DD 형식)
+    function getToday() {
+      return new Date().toISOString().split('T')[0];   // 2025-11-17
+    }
+
+    // 이미 오늘 보냈는지 체크
+    function checkAlreadySent() {
+      const sentDate = localStorage.getItem(STORAGE_KEY);
+      return sentDate === getToday();
+    }
+
+    // 오늘 보냈다고 기록
+    function markAsSent() {
+      localStorage.setItem(STORAGE_KEY, getToday());
+    }
+
+    // 초기 상태 설정
+    window.onload = function() {
+      const status = document.getElementById("status");
+      if (checkAlreadySent()) {
+        document.getElementById("sendBtn").disabled = true;
+        status.className = "warning";
+        status.innerHTML = `오늘은 이미 전송하셨습니다<br><small>내일 다시 이용해주세요</small>`;
+      }
+    };
+
+    function sendEmail() {
+      const message = document.getElementById("message").value.trim();
+      const status = document.getElementById("status");
+      const button = document.getElementById("sendBtn");
+
+      if (!message) {
+        status.className = "error";
         status.textContent = "내용을 입력해주세요!";
         return;
       }
 
+      if (checkAlreadySent()) {
+        status.className = "warning";
+        status.innerHTML = `오늘은 이미 전송하셨습니다<br><small>내일 다시 와주세요</small>`;
+        return;
+      }
+
+      // 전송 중
+      status.className = "loading";
+      status.textContent = "전송 중...";
+      button.disabled = true;
+      button.textContent = "전송 중...";
+
       emailjs.send("service_u2vsen1", "template_vqxgr1v", {
         message: message,
         to_email: "bradgosy@gmail.com"
-      })
-      .then(function(response) {
-        status.style.color = "green";
-        status.textContent = "이메일이 성공적으로 전송되었습니다!";
+      }).then(() => {
+        markAsSent();   // 성공하면 오늘 기록
+        status.className = "success";
+        status.innerHTML = `성공적으로 전송되었습니다!<br><small>하루 한 번 감사합니다</small>`;
         document.getElementById("message").value = "";
-      }, function(error) {
-        status.style.color = "red";
-        status.textContent = "전송 실패: " + error.text;
+        button.disabled = true;
+        button.textContent = "오늘 전송 완료";
+      }, (error) => {
+        status.className = "error";
+        status.textContent = "전송 실패: " + (error.text || "다시 시도해주세요");
+      }).finally(() => {
+        if (!checkAlreadySent()) button.disabled = false;  // 실패하면 다시 시도 가능
+        if (checkAlreadySent()) button.textContent = "오늘 전송 완료";
       });
     }
+
+    // 엔터키로 전송
+    document.getElementById("message").addEventListener("keydown", function(e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendEmail();
+      }
+    });
   </script>
 </body>
 </html>
