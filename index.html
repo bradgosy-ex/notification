@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>이메일 보내기</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("HzYk0wIEOoM4IMMa_");  // ← EmailJS 가입 후 발급받은 Public Key
+    })();
+  </script>
 </head>
 <body>
-    <h1>HealthCheck</h1>
+  <h2>GitHub Pages에서 이메일 보내기</h2>
+  
+  <textarea id="message" rows="5" cols="40" placeholder="내용을 입력하세요."></textarea><br><br>
+  
+  <button onclick="sendEmail()">이메일 보내기</button>
+  
+  <p id="status"></p>
+
+  <script>
+    function sendEmail() {
+      const message = document.getElementById("message").value;
+      const status = document.getElementById("status");
+
+      if (!message.trim()) {
+        status.style.color = "red";
+        status.textContent = "내용을 입력해주세요!";
+        return;
+      }
+
+      emailjs.send("service_u2vsen1", "template_vqxgr1v", {
+        message: message,
+        to_email: "bradgosy@gmail.com"
+      })
+      .then(function(response) {
+        status.style.color = "green";
+        status.textContent = "이메일이 성공적으로 전송되었습니다!";
+        document.getElementById("message").value = "";
+      }, function(error) {
+        status.style.color = "red";
+        status.textContent = "전송 실패: " + error.text;
+      });
+    }
+  </script>
 </body>
 </html>
