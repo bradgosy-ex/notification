@@ -190,9 +190,8 @@
             }).then(() => {
                 markAsSent();
                 status.className = "success";
-                status.innerHTML = translations[lang].success;
+                status.innerHTML = translations[lang].sendmail_success;
                 document.getElementById("message").value = "";
-                button.textContent = lang === 'ko' ? "오늘 전송 완료" : lang === 'en' ? "Sent Today" : "本日送信済";
             }, () => {
                 status.className = "error";
                 status.textContent = "Failed. Please try again.";
