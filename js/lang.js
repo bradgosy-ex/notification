@@ -1,6 +1,6 @@
 ﻿const lang_buttons = {
     kr: { name: "한국어", code: "🇰🇷", flag: "image/kr.svg" },
-    en: { name: "English", code: "🇺🇸", flag: "image/gb.svg" },
+    en: { name: "English", code: "🇺🇸", flag: "image/us.svg" },
     vn: { name: "Tiếng Việt", code: "🇻🇳", flag: "image/vn.svg" },
     th: { name: "แบบไทย", code: "🇹🇭", flag: "image/th.svg" }
 };
