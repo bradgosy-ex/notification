@@ -1,207 +1,336 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>문의하기</title>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init("HzYk0wIEOoM4IMMa_");  // EmailJS_Part
-    })();
-  </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문의하기</title>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family:'Noto Sans KR',sans-serif;
-      background:linear-gradient(135deg,#667eea,#764ba2);
-      min-height:100vh; padding:20px;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .card {
-      background:#fff; border-radius:24px;
-      box-shadow:0 20px 40px rgba(0,0,0,0.15);
-      padding:40px 30px; width:100%; max-width:420px; text-align:center;
-    }
-    h2 { font-size:24px; margin-bottom:8px; color:#333; }
-    p.subtitle { color:#888; margin-bottom:32px; font-size:15px; }
-    textarea {
-      width:100%; min-height:160px; padding:16px; border:2px solid #e1e1e1;
-      border-radius:16px; font-size:16px; resize:none; transition:.3s;
-    }
-    textarea:focus { outline:none; border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.15); }
-    button {
-      margin-top:24px; width:100%; padding:16px; background:linear-gradient(135deg,#667eea,#764ba2);
-      color:#fff; border:none; border-radius:16px; font-size:17px; font-weight:600;
-      cursor:pointer; box-shadow:0 8px 20px rgba(102,126,234,0.4); transition:.3s;
-    }
-    button:hover { transform:translateY(-2px); }
-    button:disabled {
-      background:#aaa; cursor:not-allowed; transform:none;
-      box-shadow:none;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("HzYk0wIEOoM4IMMa_");  // EmailJS_Part
+        })();
+    </script>
 
-      /* 스타일만 살짝 고급지게 수정 (기존 스타일에 추가 또는 교체) */
-      .lang-select {
-          position: absolute;
-          top: 18px;
-          right: 18px;
-          z-index: 10;
-      }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
-      select#language {
-          padding: 11px 36px 11px 14px;
-          font-size: 15px;
-          font-weight: 600;
-          border: none;
-          border-radius: 14px;
-          background: rgba(255,255,255,0.95);
-          color: #333;
-          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-          backdrop-filter: blur(10px);
-          cursor: pointer;
-          appearance: none;
-          background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23555'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-          background-repeat: no-repeat;
-          background-position: right 12px center;
-          background-size: 14px;
-          transition: all 0.3s;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      select#language:focus {
-        outline: none;
-        transform: scale(1.05);
-        box-shadow: 0 0 0 4px rgba(102,126,234,0.3);
-      }
+        body {
+            font-family: 'Noto Sans KR',sans-serif;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      select#language option {
-        font-weight: 500;
-      }
-    /* 언어 선택기 */
-    #status { margin-top:20px; font-weight:500; min-height:28px; }
-    .success { color:#34c759; }
-    .error { color:#ff3b30; }
-    .warning { color:#ff9500; }
-  </style>
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        p.subtitle {
+            color: #888;
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            padding: 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 16px;
+            font-size: 16px;
+            resize: none;
+            transition: .3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.15);
+        }
+
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+            transition: .3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+
+
+
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 160px;
+        }
+
+        .selected-option {
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.97);
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 16px;
+            user-select: none;
+            transition: all 0.3s;
+        }
+
+        .selected-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+        }
+
+        .flag-img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .arrow {
+            margin-left: auto;
+            font-size: 14px;
+            color: #666;
+        }
+        .options-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            margin-top: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            max-height: 300px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        .options-list.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .option-item {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .option-item:hover {
+            background: #f0f4ff;
+        }
+
+        .option-item .flag-img {
+            margin-right: 12px;
+        }
+
+        .lang-select {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 10;
+        }
+
+        select#language {
+            padding: 12px 40px 12px 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.96);
+            color: #333;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+            select#language:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            }
+
+            select#language:focus {
+                outline: none;
+                box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
+                transform: scale(1.03);
+            }
+
+        /* 국기 이모지 폰트 크기 조정 */
+        select#language option {
+            font-size: 16px;
+        }
+        /* 언어 선택기 */
+        p.subtitle {
+            color: #888;
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-weight: 500;
+            min-height: 28px;
+        }
+        .success {
+            color: #34c759;
+        }
+
+        .error {
+            color: #ff3b30;
+        }
+
+        .warning {
+            color: #ff9500;
+        }
+    </style>
 </head>
 <body>
     <!-- 언어 선택 -->
     <div class="lang-select">
-        <select id="language" onchange="setLang(this.value)">
-            <option value="ko">한국어</option>
-            <option value="en">English</option>
-            <option value="ja">日本語</option>
-            <!-- 추가하고 싶으면 아래처럼! -->
-            <!-- <option value="zh">中文 (简体)</option> -->
-            <!-- <option value="es">Español</option> -->
-        </select>
+        <div class="custom-select">
+            <div class="selected-option" id="selectedOption">
+                <span class="flag-img" id="selectedFlag"></span>
+                <span id="selectedText">한국어</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="options-list" id="optionsList"></div>
+        </div>
     </div>
+
     <div class="card">
-        <h2 data-t="title">건의하기</h2>
-        <p class="subtitle" data-t="subtitle">편하게 질문, 건의 보내주세요.<br>단 하루에 한 번만 보내실 수 있어요😊</p>
+        <h2 data-t="sendmail_title">건의하기</h2>
+        <p class="subtitle" data-t="sendmail_subtitle">편하게 질문, 건의 보내주세요.<br>단 하루에 한 번만 보내실 수 있어요😊</p>
 
-        <textarea id="message" data-t="message" placeholder="무슨 일이 있나요? 😊"></textarea>
+        <textarea id="message" data-t="sendmail_message" placeholder="무슨 일이 있나요?"></textarea>
 
-        <button id="sendbtn" data-t="sendbtn" onclick="sendEmail()">전송하기</button>
+        <button id="sendbtn" data-t="sendmail_sendbtn" onclick="sendEmail()">전송하기</button>
 
-        <div id="status" data-t="status"></div>
+        <div id="status" data-t="sendmail_status"></div>
+        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/kr.svg" width="20" height="20" alt="한국">
+        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/gb.svg" width="20" height="20" alt="영국">
+        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/vn.svg" width="30" height="20" alt="베트남">
+        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/th.svg" width="20" height="20" alt="태국">
     </div>
 
+    <script type="text/javascript" language="javascript" src="js/storage.js"></script>
+    <script type="text/javascript" language="javascript" src="js/lang.js"></script>
     <script>
-        const STORAGE_KEY = "daily_email_sent_date";   // 이 키로 오늘 보냈는지 체크
-        const translations = {
-            ko: {
-                title: "문의하기",
-                subtitle: "하루에 한 번만 보내실 수 있어요<br>정말 중요한 내용만 부탁드릴게요",
-                placeholder: "무슨 일이 있나요?",
-                sendbtn: "전송하기",
-                sent_today: "오늘은 이미 전송하셨습니다<br><small>내일 다시 와주세요</small>",
-                success: "성공적으로 전송되었습니다!<br><small>하루 한 번 감사합니다</small>",
-                error_empty: "내용을 입력해주세요!",
-                sending: "전송 중..."
-            },
-            en: {
-                title: "Contact Me",
-                subtitle: "One message per day only<br>Please send only important messages",
-                placeholder: "What's on your mind?",
-                sendbtn: "Send Message",
-                sent_today: "You've already sent a message today<br><small>Please come back tomorrow</small>",
-                success: "Message sent successfully!<br><small>Thank you for one message per day</small>",
-                error_empty: "Please write your message!",
-                sending: "Sending..."
-            },
-            ja: {
-                title: "お問い合わせ",
-                subtitle: "1日1回のみ送信可能です<br>重要な内容のみお願いします",
-                placeholder: "何かありましたか？",
-                sendbtn: "送信する",
-                sent_today: "今日はすでに送信済みです<br><small>明日またお越しください</small>",
-                success: "正常に送信されました！<br><small>1日1回ありがとうございます</small>",
-                error_empty: "内容を入力してください！",
-                sending: "送信中..."
-            }
-        };
-
-        // 현재 언어 (URL 파라미터 ?lang=en 또는 localStorage)
-        function getLang() {
-            const params = new URLSearchParams(location.search);
-            const urlLang = params.get('lang');
-            if (urlLang && translations[urlLang]) return urlLang;
-            return localStorage.getItem('userLang') || 'ko';
-        }
-
-        function setLang(lang) {
-            localStorage.setItem('userLang', lang);
-            location.search = `?lang=${lang}`;   // URL도 예쁘게 유지
-        }
-
         // 페이지 로드 시 언어 적용
         function applyLanguage() {
             const lang = getLang();
             document.documentElement.lang = lang;
-            console.log(lang);
 
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
-                if (key === "message") {
-                    el.placeholder = translations[lang][key];
-                } else if (key === "title") {
+                if (key === "sendmail_message") {
+                    el.placeholder = translations[lang]['sendmail_placeholder'];
+                } else if (key === "sendmail_title") {
                     document.title = translations[lang][key] + " | Contact";
                     el.textContent = translations[lang][key];
-                } else if (key === "sendbtn") {
-                    document.getElementById("sendbtn").textContent = translations[lang][key];
+                } else if (key === "sendmail_sendbtn") {
+                    el.textContent = translations[lang][key];
                 } else {
                     el.innerHTML = translations[lang][key] || el.innerHTML;
                 }
             });
             // 언어 버튼 활성화 표시
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                const btnText = btn.textContent.replace(/\s+/g, ''); // 모든 공백 제거
-                const target = lang === 'ko' ? '한국어' : lang === 'en' ? 'EN' : '日本語';
-                btn.classList.toggle('active', btnText === target);
+            createLanguageSelect(lang);
+            updateSelected(lang);
+            document.querySelector(".selected-option").onclick = function (e) {
+                e.stopPropagation(); // 바깥 클릭 방지
+                document.getElementById("optionsList").classList.toggle("show");
+            };
+        }
+
+        function updateSelected(lang) {
+            document.getElementById("selectedFlag").style.backgroundImage = `url('${lang_buttons[lang].flag}')`;
+            document.getElementById("selectedText").textContent = lang_buttons[lang].code;
+        }
+        // 커스텀 드롭다운 생성
+        function createLanguageSelect(lang) {
+            const optionsList = document.getElementById("optionsList");
+            optionsList.innerHTML = "";
+
+            Object.keys(lang_buttons).forEach(code => {
+                console.log(code);
+                const div = document.createElement("div");
+                div.className = "option-item";
+                div.dataset.value = code;
+                div.innerHTML = `<span class="flag-img" style="background-image:url('${lang_buttons[code].flag}')"></span><span>${lang_buttons[code].code}</span>`;
+                div.onclick = () => {
+                    setLang(code);
+                    updateSelected(code);
+                    document.getElementById("optionsList").classList.remove("show");  // ← 닫아주기
+                };
+                optionsList.appendChild(div);
             });
         }
 
-        function markAsSent() {
-            localStorage.setItem(STORAGE_KEY, getToday());
-        }
-
-        // 하루 1회 제한 + 다국어 메시지
-        function getToday() { return new Date().toISOString().split('T')[0]; }
-        // 이미 오늘 보냈는지 체크
-        function checkAlreadySent() { return localStorage.getItem(STORAGE_KEY) === getToday(); }
-        // 오늘 보냈다고 기록
-        function markAsSent() { localStorage.setItem(STORAGE_KEY, getToday()); }
 
         // 초기 상태 설정
         window.onload = function () {
             applyLanguage();
             if (checkAlreadySent()) {
                 document.getElementById("status").className = "warning";
-                document.getElementById("status").innerHTML = translations[getLang()].sent_today;
+                document.getElementById("status").innerHTML = translations[getLang()].sendmail_sent_today;
                 document.getElementById("sendbtn").disabled = true;
             }
         };
@@ -213,7 +342,7 @@
             const button = document.getElementById("sendbtn");
 
             if (!message) { status.className = "error"; status.textContent = translations[lang].error_empty; return; }
-            if (checkAlreadySent()) { status.className = "warning"; status.innerHTML = translations[lang].sent_today; return; }
+            if (checkAlreadySent()) { status.className = "warning"; status.innerHTML = translations[lang].sendmail_sent_today; return; }
 
             status.className = "loading";
             status.textContent = translations[lang].sending;
