@@ -119,6 +119,7 @@
         .warning {
             color: #ff9500;
         }
+
     </style>
     <script type="text/javascript" language="javascript" src="js/storage.js"></script>
     <script type="text/javascript" language="javascript" src="js/lang.js"></script>
@@ -137,16 +138,13 @@
         <button id="sendbtn" data-t="sendmail_sendbtn" onclick="sendEmail()">전송하기</button>
 
         <div id="status" data-t="sendmail_status"></div>
-        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/kr.svg" width="20" height="20" alt="한국">
-        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/us.svg" width="20" height="20" alt="영국">
-        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/vn.svg" width="30" height="20" alt="베트남">
-        <img src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/th.svg" width="20" height="20" alt="태국">
     </div>
 
     <script>
 
         // 초기 상태 설정
         window.onload = function () {
+            applyLanguage();
             if (checkAlreadySent()) {
                 document.getElementById("status").className = "warning";
                 document.getElementById("status").innerHTML = translations[getLang()].sendmail_sent_today;
@@ -154,6 +152,24 @@
             }
         };
 
+        function applyLanguage() {
+            const lang = getLang();
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if (key === "sendmail_message") {
+                    el.placeholder = translations[lang]['sendmail_placeholder'];
+                } else if (key === "sendmail_title") {
+                    document.title = translations[lang][key] + " | Contact";
+                    el.textContent = translations[lang][key];
+                } else if (key === "sendmail_sendbtn") {
+                    el.textContent = translations[lang][key];
+                } else {
+                    el.innerHTML = translations[lang][key] || el.innerHTML;
+                }
+            });
+        }
         function sendEmail() {
             const lang = getLang();
             const message = document.getElementById("message").value.trim();

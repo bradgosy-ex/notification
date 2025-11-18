@@ -11,7 +11,7 @@ class LanguageSelector extends HTMLElement {
         <div class="custom-select">
           <div class="selected-option" id="selectedOption">
             <span class="flag-img" style="background-image:url('${lang_buttons[lang].flag}')"></span>
-            <span class="selected-text">${lang_buttons[lang].code}</span>
+            <span class="selected-text">${lang}</span>
             <span class="arrow">▼</span>
           </div>
           <div class="options-list" id="optionsList"></div>
@@ -127,7 +127,7 @@ class LanguageSelector extends HTMLElement {
             const div = document.createElement("div");
             div.className = "option-item";
             div.dataset.value = code;
-            div.innerHTML = `<span class="flag-img" style="background-image:url('${lang_buttons[code].flag}')"></span><span>${lang_buttons[code].code}</span>`;
+            div.innerHTML = `<span class="flag-img" style="background-image:url('${lang_buttons[code].flag}')"></span><span>${code}</span>`;
             div.onclick = () => {
                 setLang(code);
                 updateSelected(code);
