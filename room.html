@@ -110,7 +110,11 @@
             flex-direction: column;
             justify-content: space-between;
         }
-
+            .item-content > div:first-child {
+                flex-grow: 1; /* 이 부분이 남은 세로 공간을 모두 차지하도록 함 */
+                /* 필요하다면 최소 높이를 설정할 수도 있습니다 */
+                /* min-height: 0; */
+            }
         .item-title {
             font-size: 20px;
             font-weight: 700;
