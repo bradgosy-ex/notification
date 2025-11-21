@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문의하기</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("HzYk0wIEOoM4IMMa_");  // EmailJS_Part
+        })();
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR',sans-serif;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        p.subtitle {
+            color: #888;
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            padding: 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 16px;
+            font-size: 16px;
+            resize: none;
+            transition: .3s;
+        }
+
+            textarea:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 4px rgba(102,126,234,0.15);
+            }
+
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+            transition: .3s;
+        }
+
+            button:hover {
+                transform: translateY(-2px);
+            }
+
+            button:disabled {
+                background: #aaa;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+        p.subtitle {
+            color: #888;
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-weight: 500;
+            min-height: 28px;
+        }
+
+        .success {
+            color: #34c759;
+        }
+
+        .error {
+            color: #ff3b30;
+        }
+
+        .warning {
+            color: #ff9500;
+        }
+    </style>
+    <script type="text/javascript" language="javascript" src="js/storage.js"></script>
+    <script type="text/javascript" language="javascript" src="js/lang.js"></script>
+</head>
+<body>
+    <!-- 언어 선택 -->
+    <div class="card">
+        <h2 data-t="sendmail_title">건의하기</h2>
+        <p class="subtitle" data-t="sendmail_subtitle">편하게 질문, 건의 보내주세요.<br>단 하루에 한 번만 보내실 수 있어요😊</p>
+
+        <textarea id="message" data-t="sendmail_message" placeholder="무슨 일이 있나요?"></textarea>
+
+        <button id="sendbtn" data-t="sendmail_sendbtn" onclick="sendEmail()">전송하기</button>
+
+        <div id="status" data-t="sendmail_status"></div>
+    </div>
+
+    <script>
+
+        // 초기 상태 설정
+        window.onload = function () {
+            applyLanguage();
+            if (checkAlreadySent()) {
+                document.getElementById("status").className = "warning";
+                document.getElementById("status").innerHTML = translations[getLang()].sendmail_sent_today;
+                document.getElementById("sendbtn").disabled = true;
+            }
+        };
+
+        function applyLanguage() {
+            const lang = getLang();
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if (key === "sendmail_message") {
+                    el.placeholder = translations[lang]['sendmail_placeholder'];
+                } else if (key === "sendmail_title") {
+                    document.title = translations[lang][key] + " | Contact";
+                    el.textContent = translations[lang][key];
+                } else if (key === "sendmail_sendbtn") {
+                    el.textContent = translations[lang][key];
+                } else {
+                    el.innerHTML = translations[lang][key] || el.innerHTML;
+                }
+            });
+        }
+        function sendEmail() {
+            const lang = getLang();
+            const message = document.getElementById("message").value.trim();
+            const status = document.getElementById("status");
+            const button = document.getElementById("sendbtn");
+
+            if (!message) { status.className = "error"; status.textContent = translations[lang].error_empty; return; }
+            if (checkAlreadySent()) { status.className = "warning"; status.innerHTML = translations[lang].sendmail_sent_today; return; }
+
+            status.className = "loading";
+            status.textContent = translations[lang].sending;
+            button.disabled = true;
+
+            // EmailJS_Part
+            emailjs.send("service_u2vsen1", "template_vqxgr1v", {
+                message: message,
+                to_email: "bradgosy@gmail.com"
+            }).then(() => {
+                markAsSent();
+                status.className = "success";
+                status.innerHTML = translations[lang].sendmail_success;
+                document.getElementById("message").value = "";
+            }, () => {
+                status.className = "error";
+                status.textContent = "Failed. Please try again.";
+            }).finally(() => {
+                button.disabled = checkAlreadySent();
+            });
+        }
+
+        // 엔터키로 전송
+        document.getElementById("message").addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                sendEmail();
+            }
+        });
+    </script>
+</body>
+</html>
