@@ -70,12 +70,17 @@
             overflow: hidden;
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
             margin-bottom: 30px;
-            height: 20vh;
+            /* height: 20vh; 이 두 줄을 삭제하거나 주석 처리합니다. */
+            /* min-height: 140px; */
+            /* ↓↓ height를 제거하면 내용물 크기에 따라 자동으로 높이가 조절됩니다. ↓↓ */
+            /* min-height를 설정하여 최소 높이만 보장합니다. */
             min-height: 140px;
             transition: all .4s;
             color: #333;
+            /* 내용이 많아지면 자동으로 높이가 늘어나도록 합니다. */
+            /* height 속성을 제거하는 것만으로 충분하지만, 명시적으로 auto로 설정할 수도 있습니다. */
+            height: auto;
         }
-
             .item:hover {
                 transform: translateY(-10px);
                 box-shadow: 0 25px 50px rgba(0,0,0,0.28);
@@ -118,6 +123,10 @@
             color: #666;
             line-height: 1.5;
             margin-bottom: 12px;
+            /* 만약 내용이 너무 길어서 카드를 너무 크게 만든다면, 최대 높이를 지정할 수 있습니다. */
+            /* max-height: 4.5em; /* 3줄 정도 높이 */
+            /* overflow: hidden; */
+            /* text-overflow: ellipsis; */
         }
 
         .item-likes {
