@@ -98,24 +98,31 @@
             background: rgba(30, 30, 50, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 50px;
+            display: flex; /* 이미 적용됨 */
+            align-items: center; /* 이미 적용됨 */
+            justify-content: space-around; /* gap 대신 space-around 사용으로 공간 균등 분배 */
+            /* gap: 50px; 이 속성은 삭제하거나 주석 처리 */
             z-index: 1000;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+            padding: 0 10px; /* 양 옆에 약간의 패딩 추가 (선택 사항) */
         }
 
-        .fixed-bottom a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: 500;
-            padding: 8px 20px;
-            border-radius: 12px;
-            transition: all .3s;
-            position: relative;
-        }
+            .fixed-bottom a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 17px; /* 모바일에서 텍스트가 길다면 폰트 크기를 줄일 수 있습니다 (예: 15px) */
+                font-weight: 500;
+                padding: 8px 10px; /* 좌우 패딩을 줄여 공간 확보 */
+                border-radius: 12px;
+                transition: all .3s;
+                position: relative;
+                text-align: center; /* 텍스트 정렬 */
+                white-space: nowrap; /* ★핵심: 텍스트 줄바꿈 방지 */
+                /* 아래 세 줄은 공간을 동등하게 분배하는 Flexbox 트릭입니다 */
+                flex-basis: 0;
+                flex-grow: 1;
+                min-width: 0;
+            }
 
         .fixed-bottom a:hover {
             background: rgba(102,126,234,0.3);
