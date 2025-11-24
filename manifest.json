@@ -3,7 +3,7 @@
   "short_name": "HaemiLife",
   "description": "For workers in Haemi",
   "start_url": "/",
-  "display": "standalone", // ÀÌ ÁÙÀÌ ÇÙ½É! (fullscreenµµ °¡´É)
+  "display": "standalone", // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½! (fullscreenï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "icons": [
