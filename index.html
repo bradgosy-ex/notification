@@ -2,22 +2,219 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Bradgosy EX</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/image/WorkerIcon192.png">
-    <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Site</title>
+
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 각 페이지에서 자유롭게 바꿀 수 있는 메인 컬러 변수 */
+        :root {
+            --main-gradient: #667eea, #764ba2; /* 기본값 (프레임 기본 보라) */
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden;
+            /* send_mail.html과 동일한 배경 그라데이션 */
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        /* 모든 버튼에 이 변수 적용 (프레임 + 모든 페이지 공통) */
+        .btn-detail,
+        button,
+        #sendbtn,
+        .fixed-bottom a.active,
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--main-gradient)) !important;
+            box-shadow: 0 8px 25px rgba(var(--main-gradient-rgb, 102,126,234), 0.45) !important;
+        }
+        .btn-detail:hover,
+        button:hover,
+        .fixed-bottom a.active:hover,
+        .filter-btn.active:hover {
+            box-shadow: 0 14px 35px rgba(var(--main-gradient-rgb, 102,126,234), 0.6) !important;
+        }
+
+        /* ==================== 상단 고정 바 (모던하게 업그레이드) ==================== */
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+
+        .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .lang-select select {
+            padding: 10px 16px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 15px rgba(102,126,234,0.2);
+            cursor: pointer;
+            transition: all .3s;
+        }
+
+            .lang-select select:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+            }
+
+        /* ==================== 하단 고정 메뉴 (send_mail 버튼 느낌으로) ==================== */
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(30, 30, 50, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex; /* 이미 적용됨 */
+            align-items: center; /* 이미 적용됨 */
+            justify-content: space-around; /* gap 대신 space-around 사용으로 공간 균등 분배 */
+            /* gap: 50px; 이 속성은 삭제하거나 주석 처리 */
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+            padding: 0 10px; /* 양 옆에 약간의 패딩 추가 (선택 사항) */
+        }
+
+            .fixed-bottom a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 14px; /* 모바일에서 텍스트가 길다면 폰트 크기를 줄일 수 있습니다 (예: 15px) */
+                font-weight: 500;
+                padding: 8px 10px; /* 좌우 패딩을 줄여 공간 확보 */
+                border-radius: 12px;
+                transition: all .3s;
+                position: relative;
+                text-align: center; /* 텍스트 정렬 */
+                white-space: nowrap; /* ★핵심: 텍스트 줄바꿈 방지 */
+                /* 아래 세 줄은 공간을 동등하게 분배하는 Flexbox 트릭입니다 */
+                flex-basis: 0;
+                flex-grow: 1;
+                min-width: 0;
+            }
+
+        .fixed-bottom a:hover {
+            background: rgba(102,126,234,0.3);
+            transform: translateY(-3px);
+        }
+
+        .fixed-bottom a.active {
+            background: linear-gradient(135deg, var(--main-gradient)) !important;
+            box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+        }
+
+        /* ==================== 콘텐츠 영역 ==================== */
+        .content-wrapper {
+            height: 100%;
+            padding-top: 80px;
+            padding-bottom: 70px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .content-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: transparent; /* send_mail 배경이 비치도록 */
+        }
+    </style>
+    <script type="text/javascript" language="javascript" src="js/storage.js"></script>
+    <script type="text/javascript" language="javascript" src="js/lang.js"></script>
+    <script type="text/javascript" language="javascript" src="js/lang_select.js"></script>
 </head>
 <body>
-    <h1> 사이트 테스트2</h1>
+
+    <!-- 상단 고정 바 -->
+    <header class="fixed-top">
+        <div class="logo" id="frame_title"></div>
+        <language-selector></language-selector>
+    </header>
+
+    <!-- 하단 고정 메뉴 -->
+    <nav class="fixed-bottom">
+        <a href="home.html" class="active"></a>
+        <a href="room.html"></a>
+        <a href="underconstruct.html"></a>
+        <a href="send_mail.html"></a>
+    </nav>
+
+    <!-- 콘텐츠 영역 -->
+    <div class="content-wrapper">
+        <iframe src="home.html" class="content-iframe" id="mainFrame"></iframe>
+    </div>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('js/sw.js')
-                    .then(reg => console.log('SW OK'))
-                    .catch(err => console.log('SW Error:', err));
+                navigator.serviceWorker.register('js/sw.js');
             });
         }
+
+        window.onload = function () {
+            const lang = getLang();
+            document.getElementById("frame_title").textContent = translations[lang].frame_title;
+            document.querySelectorAll('.fixed-bottom a')[0].textContent = translations[lang].frame_menu1;
+            document.querySelectorAll('.fixed-bottom a')[1].textContent = translations[lang].frame_menu2;
+            document.querySelectorAll('.fixed-bottom a')[2].textContent = translations[lang].frame_menu3;
+            document.querySelectorAll('.fixed-bottom a')[3].textContent = translations[lang].frame_menu4;
+            document.querySelector('.logo').style.cursor = 'pointer'; // 마우스 올리면 손가락 모양
+        };
+        // ★★★ 새로 추가: 로고 클릭 시 홈으로 이동 ★★★
+
+        document.querySelector('.logo').addEventListener('click', function () {
+            // 1. iframe을 home.html로 변경
+            document.getElementById('mainFrame').src = 'home.html';
+
+            // 2. 하단 메뉴에서 '홈' 버튼에 active 클래스 주기
+            document.querySelectorAll('.fixed-bottom a').forEach(a => a.classList.remove('active'));
+            document.querySelector('.fixed-bottom a[href="home.html"]').classList.add('active');
+        });
+
+        // 메뉴 클릭 시 iframe 변경 + active 클래스 처리
+        document.querySelectorAll('.fixed-bottom a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.fixed-bottom a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+
+                const page = this.getAttribute('href');
+                document.getElementById('mainFrame').src = page;
+            });
+        });
     </script>
+
 </body>
 </html>

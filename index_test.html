@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Bradgosy EX</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/image/WorkerIcon192.png">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+    <h1> 사이트 테스트2</h1>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('js/sw.js')
+                    .then(reg => console.log('SW OK'))
+                    .catch(err => console.log('SW Error:', err));
+            });
+        }
+    </script>
+</body>
+</html>
