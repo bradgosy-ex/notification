@@ -177,6 +177,12 @@
     </div>
 
     <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('js/sw.js');
+            });
+        }
+
         window.onload = function () {
             const lang = getLang();
             document.getElementById("frame_title").textContent = translations[lang].frame_title;

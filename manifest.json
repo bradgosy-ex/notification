@@ -1,0 +1,22 @@
+{
+  "name": "HaemiLife",
+  "short_name": "HaemiLife",
+  "description": "For workers in Haemi",
+  "start_url": "/",
+  "display": "standalone", // 이 줄이 핵심! (fullscreen도 가능)
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "image/WorkerIcon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "image/WorkerIcon512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}
