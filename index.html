@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=https://notification-alpha-orpin.vercel.app">
+    <title>HaemiLife로 이동 중...</title>
     <style>
         body {
             font-family: sans-serif;
@@ -21,6 +21,20 @@
 <body>
     <h1>HaemiLife</h1>
     <p>새 주소로 이동 중입니다...</p>
-    <p><a href="https://notification-alpha-orpin.vercel.app">바로가기 →</a></p>
+    <p><a href="https://notification-alpha-orpin.vercel.app" id="redirectLink">바로가기 →</a></p>
+
+    <script>
+        // 현재 URL의 쿼리 파라미터를 그대로 복사
+        const currentParams = window.location.search;   // 예: "?ref=friend&utm=gh"
+
+        // Vercel 주소 + 그대로 붙이기
+        const targetUrl = "https://notification-alpha-orpin.vercel.app" + currentParams;
+
+        // 1. 자동 리다이렉트 (0초)
+        window.location.replace(targetUrl);
+
+        // 2. 혹시 자동 이동 안 되면 클릭용 링크도 파라미터 포함
+        document.getElementById("redirectLink").href = targetUrl;
+    </script>
 </body>
 </html>
