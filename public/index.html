@@ -159,7 +159,41 @@
     <script type="text/javascript" language="javascript" src="js/lang_select.js"></script>
 </head>
 <body>
-
+    <div id="installModal" style="
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        font-family: sans-serif;
+    ">
+        <div style="
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        ">
+            <h3 style="margin: 0 0 15px;">HaemiLife 앱으로 설치</h3>
+            <p style="margin: 10px 0 25px; color:#555; font-size:14px;">
+                홈 화면에 추가하면<br>주소창 없이 빠르게 사용할 수 있어요!
+            </p>
+            <div>
+                <button id="installBtn" style="
+                    background:#6e48aa; color:white; border:none;
+                    padding:12px 24px; border-radius:50px; font-size:16px; cursor:pointer;
+                ">
+                    바로 설치하기
+                </button><br><br>
+                <button id="laterBtn" style="background:none; color:#777; border:none; font-size:14px; cursor:pointer;">
+                    나중에
+                </button>
+            </div>
+        </div>
+    </div>
     <!-- 상단 고정 바 -->
     <header class="fixed-top">
         <div class="logo" id="frame_title"></div>
@@ -213,6 +247,61 @@
                 const page = this.getAttribute('href');
                 document.getElementById('mainFrame').src = page;
             });
+        });
+
+
+        let deferredPrompt;
+        const modal = document.getElementById('installModal');
+        const installBtn = document.getElementById('installBtn');
+        const laterBtn = document.getElementById('laterBtn');
+
+        // 1. 이미 설치된 상태면 아예 끝!
+        if (window.matchMedia('(display-mode: standalone)').matches ||
+            window.navigator.standalone === true) {
+            console.log('이미 PWA로 실행 중');
+            // 아무것도 안 함
+        }
+        // 2. 오늘 이미 "나중에" 눌렀으면 또 안 보이게
+        else if (localStorage.getItem('install_later_date') === new Date().toDateString()) {
+            console.log('오늘은 나중에 눌러서 스킵');
+        }
+        // 3. 아직 설치 가능 이벤트가 오지 않았으면 기다림
+        else {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+
+                // 5초 후에 모달 띄우기
+                setTimeout(() => {
+                    modal.style.display = 'flex';
+                }, 5000);
+            });
+        }
+
+        // 설치 버튼 클릭
+        installBtn.onclick = async () => {
+            modal.style.display = 'none';
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('설치 완료!');
+                localStorage.setItem('installed', 'true');  // 영원히 안 보이게
+            }
+            deferredPrompt = null;
+        };
+
+        // 나중에 버튼 클릭 → 오늘 하루만 스킵
+        laterBtn.onclick = () => {
+            modal.style.display = 'none';
+            localStorage.setItem('install_later_date', new Date().toDateString());
+        };
+
+        // 모달 바깥 클릭해도 닫히게
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                laterBtn.click();  // 바깥 클릭 = 나중에
+            }
         });
     </script>
 
