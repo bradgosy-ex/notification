@@ -30,11 +30,14 @@
         // Vercel 주소 + 그대로 붙이기
         const targetUrl = "https://notification-alpha-orpin.vercel.app" + currentParams;
 
+        alert("들어온 파라미터: " + (location.search || "없음")) ||
+            (location.href = "https://notification-alpha-orpin.vercel.app" + location.search);
         // 1. 자동 리다이렉트 (0초)
         window.location.replace(targetUrl);
 
         // 2. 혹시 자동 이동 안 되면 클릭용 링크도 파라미터 포함
         document.getElementById("redirectLink").href = targetUrl;
+
     </script>
 </body>
 </html>
