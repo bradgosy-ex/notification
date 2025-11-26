@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="image/icon-192.png">
+    <meta name="theme-color" content="#000000">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Site</title>
@@ -177,12 +180,7 @@
     </div>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('js/sw.js');
-            });
-        }
-
+        navigator.serviceWorker.register('/sw.js');
         window.onload = function () {
             const lang = getLang();
             document.getElementById("frame_title").textContent = translations[lang].frame_title;
