@@ -180,7 +180,9 @@
     </div>
 
     <script>
-        navigator.serviceWorker.register('/sw.js');
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
         window.onload = function () {
             const lang = getLang();
             document.getElementById("frame_title").textContent = translations[lang].frame_title;
