@@ -27,11 +27,6 @@
         // 현재 URL의 쿼리 파라미터를 그대로 복사
         const currentParams = window.location.search;   // 예: "?ref=friend&utm=gh"
 
-        const params = location.search || "(없음)";
-
-        // 1. alert로 파라미터 보여주고 사용자가 OK 눌러야 다음 코드 실행
-        alert("들어온 파라미터: " + params + "두번째" + currentParams);
-
         // Vercel 주소 + 그대로 붙이기
         const targetUrl = "https://notification-alpha-orpin.vercel.app" + currentParams;
 
