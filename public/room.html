@@ -171,47 +171,44 @@
             <button class="filter-btn" data-filter="other" id="filter_other"></button>
         </div>
 
-        <!-- 아이템 목록 -->
-        <div class="item category-all category-recommend">
-            <div class="item-img">
-                <img src="image/cong.jpg" alt="이벤트">
-            </div>
-            <div class="item-content">
-                <div>
-                    <div class="item-title" id="item1_title"></div>
-                    <div class="item-desc" id="item1_desc"></div>
-                </div>
-                <div class="item-likes"><i>❤️</i> 113</div>
-            </div>
-        </div>
-        <div class="item category-all category-recommend">
-            <div class="item-img">
-                <img src="image/green.jpg" alt="그린빌라">
-            </div>
-            <div class="item-content">
-                <div>
-                    <div class="item-title" id="item2_title"></div>
-                    <div class="item-desc" id="item2_desc"></div>
-                    <div class="item-contact" id="item2_contact"></div>
-                </div>
-                <div class="item-likes"><i>❤️</i> 12</div>
-            </div>
-        </div>
+        <!-- 아이템 목록 (동적 생성) -->
+        <div class="item-list"></div>
 
 
     </div>
 
     <!-- 간단한 필터 기능 (선택사항) -->
     <script>
-        document.getElementById("filter_all").textContent = room[getLang()].filter_all;
-        document.getElementById("filter_recommend").textContent = room[getLang()].filter_recommend;
-        document.getElementById("filter_other").textContent = room[getLang()].filter_other;
+        // room.html 로드 시 room 데이터 fetch
+        (async function() {
+            const lang = getLang();
+            await fetchTranslations('room', lang);
+            document.getElementById("filter_all").textContent = pageTexts["room"]["filter_all"];
+            document.getElementById("filter_recommend").textContent = pageTexts["room"]["filter_recommend"];
+            document.getElementById("filter_other").textContent = pageTexts["room"]["filter_other"];
 
-        document.getElementById("item1_title").innerHTML = room[getLang()].item1_title;
-        document.getElementById("item1_desc").innerHTML = room[getLang()].item1_desc;
-        document.getElementById("item2_title").innerHTML = room[getLang()].item2_title;
-        document.getElementById("item2_desc").innerHTML = room[getLang()].item2_desc;
-        document.getElementById("item2_contact").innerHTML = room[getLang()].item2_contact;
+            // 게시물 목록 fetch
+            const items = await fetchBoardPost('room', 0, 10, lang);
+            const itemList = document.querySelector('.item-list');
+            items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `item category-all category-${item.category}`;
+                itemDiv.innerHTML = `
+                    <div class="item-img">
+                        <img src="${item.img}" alt="${item.title}">
+                    </div>
+                    <div class="item-content">
+                        <div>
+                            <div class="item-title">${item.title}</div>
+                            <div class="item-desc">${item.desc}</div>
+                            ${item.contact ? `<div class="item-contact">${item.contact}</div>` : ''}
+                        </div>
+                        <div class="item-likes"><i>❤️</i> ${item.likes}</div>
+                    </div>
+                `;
+                itemList.appendChild(itemDiv);
+            });
+        })();
         
 
         document.querySelectorAll('.filter-btn').forEach(btn => {

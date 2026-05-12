@@ -52,7 +52,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 80px;
+            height: 56px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -60,22 +60,22 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding: 0 30px;
+            padding: 0 12px;
             z-index: 1000;
         }
 
         .logo {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 28px;
+            left: 15px;
+            transform: none;
+            font-size: 22px;
             font-weight: 700;
             color: #333;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .lang-select select {
-            padding: 10px 16px;
+            padding: 6px 12px;
             font-size: 15px;
             font-weight: 500;
             border: none;
@@ -182,13 +182,10 @@
                 홈 화면에 추가하면<br>주소창 없이 빠르게 사용할 수 있어요!
             </p>
             <div>
-                <button id="installBtn" style="
-                    background:#6e48aa; color:white; border:none;
-                    padding:12px 24px; border-radius:50px; font-size:16px; cursor:pointer;
-                ">
+                <button id="installBtn" style="background:#6e48aa; color:white; border:none;padding:6px 12px; border-radius:50px; font-size:16px; cursor:pointer;">
                     바로 설치하기
                 </button><br><br>
-                <button id="laterBtn" style="background:none; color:#777; border:none; font-size:14px; cursor:pointer;">
+                <button id="laterBtn" style="background: none; color: #777; border: none; padding: 6px 12px; font-size: 14px; cursor: pointer;">
                     나중에
                 </button>
             </div>
@@ -217,13 +214,19 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js');
         }
+        // 웹페이지 시작 전에 번역 데이터 fetch
+        (async function() {
+            const lang = getLang(); // 기본 언어 감지
+            await fetchTranslations('frame', lang);
+        })();
         window.onload = function () {
             const lang = getLang();
-            document.getElementById("frame_title").textContent = translations[lang].frame_title;
-            document.querySelectorAll('.fixed-bottom a')[0].textContent = translations[lang].frame_menu1;
-            document.querySelectorAll('.fixed-bottom a')[1].textContent = translations[lang].frame_menu2;
-            document.querySelectorAll('.fixed-bottom a')[2].textContent = translations[lang].frame_menu3;
-            document.querySelectorAll('.fixed-bottom a')[3].textContent = translations[lang].frame_menu4;
+
+            document.getElementById("frame_title").textContent = pageTexts["frame"]["title"];
+            document.querySelectorAll('.fixed-bottom a')[0].textContent = pageTexts["frame"]["menu1"];
+            document.querySelectorAll('.fixed-bottom a')[1].textContent = pageTexts["frame"]["menu2"];
+            document.querySelectorAll('.fixed-bottom a')[2].textContent = pageTexts["frame"]["menu3"];
+            document.querySelectorAll('.fixed-bottom a')[3].textContent = pageTexts["frame"]["menu4"];
             document.querySelector('.logo').style.cursor = 'pointer'; // 마우스 올리면 손가락 모양
         };
         // ★★★ 새로 추가: 로고 클릭 시 홈으로 이동 ★★★

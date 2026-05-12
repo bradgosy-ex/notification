@@ -142,9 +142,14 @@
     </div>
 
     <script>
-        document.getElementById("item1_title").textContent = guides[getLang()].item1_title;
-        document.getElementById("item1_text").innerHTML = guides[getLang()].item1_text;
-        document.getElementById("item1_details").textContent = guides[getLang()].item1_details;
+        // home.html 로드 시 guide 데이터 fetch (필요 시)
+        (async function() {
+            const lang = getLang();
+            await fetchTranslations('guide', lang);
+            document.getElementById("item1_title").textContent = pageTexts["guide"]["item1_title"];
+            document.getElementById("item1_text").innerHTML = pageTexts["guide"]["item1_text"];
+            document.getElementById("item1_details").textContent = pageTexts["guide"]["item1_details"];
+        })();
     </script>
 
 </body>
